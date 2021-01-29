@@ -1,0 +1,20 @@
+.message-success {
+  color: #155724 !important;
+  background-color: #d4edda !important;
+  border-color: #c3e6cb !important;
+}
+.message-error {
+  color: #721c24 !important;
+  background-color: #f8d7da !important;
+  border-color: #f5c6cb !important;
+}
+.message-info {
+  color: #004085 !important;
+  background-color: #cce5ff !important;
+  border-color: #b8daff !important;
+}
+.message-warning {
+  color: #856404 !important;
+  background-color: #fff3cd !important;
+  border-color: #ffeeba !important;
+}

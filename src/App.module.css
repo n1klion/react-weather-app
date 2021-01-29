@@ -1,0 +1,17 @@
+.container-wrap {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+}
+.container-empty {
+  text-align: center;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 300;
+}
+.message-toast-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 999;
+}

@@ -1,12 +1,1 @@
-.form-wrap {
-  display: flex;
-  margin-bottom: 10px;
-}
-.form-input-search {
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-}
-.form-btn-search {
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-}
+.search-body

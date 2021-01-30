@@ -1,12 +1,11 @@
 import classes from './Loader.module.css'
-import { Spinner } from 'react-bootstrap'
+import { Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 
 function Loader() {
   return (
     <div className={classes['loader-wrap']}>
-      <Spinner animation="grow" style={{ width: '5rem', height: '5rem' }}>
-        <span className="sr-only">Loading...</span>
-      </Spinner>
+      <Spin indicator={<LoadingOutlined style={{ fontSize: '4rem' }} spin />} />
     </div>
   )
 }

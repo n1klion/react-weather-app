@@ -63,12 +63,18 @@ export function getWeather(cityName) {
   return async function (dispatch, getState) {
     try {
       dispatch(toggleLoader(false))
-      const response = await axios.get(`/weather?q=${cityName}`)
-      const cities = getState().weather.citiesWeather
-      const checked = checkRepeatCity(cities, response)
+      const requestArr = [
+        axios.get(`/weather?q=${cityName}`),
+        axios.get(`/forecast?q=${cityName}&cnt=9`),
+      ]
+      const [weatherOfCity, weatherOf24Hourse] = await Promise.all(requestArr)
+      const citiesList = getState().weather.citiesWeather
+      const checked = checkRepeatCity(citiesList, weatherOfCity)
 
-      if(!checked) {
-        dispatch(setWeather(response))
+      const weatherDetail = { ...weatherOfCity, weather_of_24_hours: weatherOf24Hourse }
+
+      if (!checked) {
+        dispatch(setWeather(weatherDetail))
       } else {
         notification.warn({
           message: 'Пердупреждение',
@@ -76,9 +82,10 @@ export function getWeather(cityName) {
         })
       }
     } catch (err) {
+      const msg = err.response.status === 404 ? 'Город не найден' : err.message
       notification.error({
-        message: 'Error search',
-        description: err.message,
+        message: 'Ошибка',
+        description: msg,
       })
     } finally {
       dispatch(toggleLoader(true))

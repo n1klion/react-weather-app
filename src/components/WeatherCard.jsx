@@ -1,7 +1,7 @@
-import classes from './WeatherCard.module.css'
-import firstLetterCaps from '../../helpers/firstLetterCaps'
+import firstLetterCaps from '../helpers/firstLetterCaps'
 import { Card } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
+import Details from './Details'
 
 function WeatherCard({ weather, deleteCityFromList }) {
   const nameCity = weather.name
@@ -10,19 +10,21 @@ function WeatherCard({ weather, deleteCityFromList }) {
   const temp = Math.round(weather.main.temp)
   const description = firstLetterCaps(weather.weather[0].description)
   const feelsLike = Math.round(weather.main.feels_like)
+  const details = weather.weather_of_24_hours
   return (
-    <Card className={classes['weather-card-wrap']}>
-      <h3 className={classes['weather-title']}>{nameCity}</h3>
+    <Card className={'weather-card-wrap'}>
       <CloseOutlined
         onClick={() => deleteCityFromList(weather.id)}
-        className={classes['weather-card-close']}
+        className={'weather-card-close'}
       />
-      <div className={classes['weather-degree-details']}>
+      <h3 className={'weather-title'}>{nameCity}</h3>
+      <div className={'weather-degree-details'}>
         <img src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt={iconAlt} />
-        <span className={classes['weather-degree']}>{temp}&#176;C</span>
+        <span className={'weather-degree'}>{temp}&#176;C</span>
       </div>
-      <p className={classes['weather-clouds']}>{description}</p>
-      <p className={classes['weather-feelslike']}>Ощущается как: {feelsLike}&#176;C</p>
+      <p className={'weather-clouds'}>{description}</p>
+      <p className={'weather-feelslike'}>Ощущается как: {feelsLike}&#176;C</p>
+      <Details details={details} />
     </Card>
   )
 }

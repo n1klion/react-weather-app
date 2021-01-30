@@ -1,10 +1,11 @@
-import classes from './App.module.css'
 import { useDispatch, useSelector } from 'react-redux'
-import WeatherCard from './components/WeatherCard/WeatherCard'
-import Loader from './components/Loader/Loader'
-import Search from './components/Search/Search'
+import WeatherCard from './components/WeatherCard'
+import Loader from './components/Loader'
+import Search from './components/Search'
 import { getWeather, deleteCity } from './store/weatherReducer'
 import { notification, Col } from 'antd'
+
+import './App.less'
 
 function App() {
   const dispatch = useDispatch()
@@ -29,15 +30,21 @@ function App() {
 
   function dataList() {
     if (data.length) {
-      return data.map((city, index) => <WeatherCard deleteCityFromList={deleteCityFromList} weather={city} key={index} />)
+      return data.map((city, index) => (
+        <WeatherCard deleteCityFromList={deleteCityFromList} weather={city} key={index} />
+      ))
     } else {
-      return <div style={{fontSize: '1.2rem', lineHeight: 1.2, color: '#bfbfbf'}}>Список пуст...</div>
+      return (
+        <div style={{ fontSize: '1.2rem', lineHeight: 1.2, color: '#bfbfbf' }}>
+          Список пуст...
+        </div>
+      )
     }
   }
 
   return (
     <>
-      <Col span={12} offset={6} className={classes['container-wrap']}>
+      <Col span={12} offset={6} className="container-wrap">
         <Search onSearchHandler={onSearchHandler} />
         {isLoaded ? dataList() : <Loader />}
       </Col>

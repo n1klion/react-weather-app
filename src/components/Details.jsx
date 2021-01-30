@@ -6,7 +6,7 @@ const { TabPane } = Tabs
 function Details({ details }) {
   function tabPane() {
     return details.list.map((item, index) => {
-      const time = new Date(item.dt_txt).getHours()
+      const time = new Date(item.dt_txt.replace(/ /g, 'T')).getHours()
       const img = item.weather[0].icon
       const alt = item.weather[0].main
       const description = firstLetterCaps(item.weather[0].description)

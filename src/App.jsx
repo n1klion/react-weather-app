@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import WeatherCard from './components/WeatherCard'
 import Loader from './components/Loader'
 import Search from './components/Search'
-import { getWeather, deleteCity } from './store/weatherReducer'
+import { getWeather, deleteCity, updateWeather } from './store/weatherReducer'
 import { notification, Col } from 'antd'
 
 import './App.less'
@@ -28,10 +28,19 @@ function App() {
     dispatch(deleteCity(id))
   }
 
+  function updateCity(name) {
+    dispatch(updateWeather(name))
+  }
+
   function dataList() {
     if (data.length) {
       return data.map((city, index) => (
-        <WeatherCard deleteCityFromList={deleteCityFromList} weather={city} key={index} />
+        <WeatherCard
+          updateCity={updateCity}
+          deleteCityFromList={deleteCityFromList}
+          weather={city}
+          key={index}
+        />
       ))
     } else {
       return (
@@ -44,9 +53,10 @@ function App() {
 
   return (
     <>
+      {!isLoaded && <Loader />}
       <Col span={12} offset={6} className="container-wrap">
         <Search onSearchHandler={onSearchHandler} />
-        {isLoaded ? dataList() : <Loader />}
+        {dataList()}
       </Col>
     </>
   )

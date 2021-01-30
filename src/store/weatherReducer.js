@@ -4,6 +4,7 @@ import axios from '../plugins/axios'
 const WEATHER = 'weatherReducer/WEATHER'
 const TOGGLE_LOADER = 'weatherReducer/TOGGLE_LOADER'
 const DELETE_WEATHER = 'weatherReducer/DELETE_WEATHER'
+const UPDATE_WEATHER = 'weatherReducer/UPDATE_WEATHER'
 
 const initialState = {
   isLoaded: true,
@@ -31,6 +32,19 @@ function weatherReducer(state = initialState, action) {
         citiesWeather: state.citiesWeather.filter((city) => city.id !== action.payload),
       }
     }
+    case UPDATE_WEATHER: {
+      return {
+        ...state,
+        citiesWeather: state.citiesWeather.reduce((acc, item, index) => {
+          if (item.id === action.payload.id) {
+            acc[index] = action.payload
+          } else {
+            acc[index] = item
+          }
+          return acc
+        }, []),
+      }
+    }
     default:
       return state
   }
@@ -47,6 +61,13 @@ function toggleLoader(bool) {
 function setWeather(data) {
   return {
     type: WEATHER,
+    payload: data,
+  }
+}
+
+function setUpdatedWeather(data) {
+  return {
+    type: UPDATE_WEATHER,
     payload: data,
   }
 }
@@ -81,6 +102,30 @@ export function getWeather(cityName) {
           description: 'Этот город уже добавлен',
         })
       }
+    } catch (err) {
+      const msg = err.response.status === 404 ? 'Город не найден' : err.message
+      notification.error({
+        message: 'Ошибка',
+        description: msg,
+      })
+    } finally {
+      dispatch(toggleLoader(true))
+    }
+  }
+}
+
+export function updateWeather(cityName) {
+  return async function (dispatch) {
+    try {
+      dispatch(toggleLoader(false))
+      const requestArr = [
+        axios.get(`/weather?q=${cityName}`),
+        axios.get(`/forecast?q=${cityName}&cnt=9`),
+      ]
+      const [weatherOfCity, weatherOf24Hourse] = await Promise.all(requestArr)
+      const weatherDetail = { ...weatherOfCity, weather_of_24_hours: weatherOf24Hourse }
+
+      dispatch(setUpdatedWeather(weatherDetail))
     } catch (err) {
       const msg = err.response.status === 404 ? 'Город не найден' : err.message
       notification.error({
